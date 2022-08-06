@@ -1,0 +1,35 @@
+<wpml-config>
+    <admin-texts>
+        <key name="theme_mods_prolific">
+            <key name="prolific_theme_options">
+                <key name ="prolific-header-top-left-option"/>
+                <key name ="prolific-phone-number"/>
+                <key name ="prolific-top-email"/>
+                <key name ="prolific-header-top-right-option"/>
+                <key name ="prolific-enable-sticky"/>
+                <key name ="prolific-feature-page"/>
+                <key name ="prolific-featured-slider-number"/>
+                <key name ="prolific-enable-feature"/>
+                <key name ="prolific-feature-slider-enable-animation"/>
+                <key name ="prolific-header-id-display-opt"/>
+                <key name ="prolific-facebook-url"/>
+                <key name ="prolific-twitter-url"/>
+                <key name ="prolific-youtube-url"/>
+                <key name ="prolific-google-plus-url"/>
+                <key name ="prolific-enable-social"/>
+                <key name ="prolific-footer-copyright"/>
+                <key name ="prolific-footer-bg-img"/>
+                <key name ="prolific-hide-front-page-content"/>
+                <key name ="prolific-single-sidebar-layout"/>
+                <key name ="prolific-front-page-sidebar-layout"/>
+                <key name ="prolific-archive-sidebar-layout"/>
+                <key name ="prolific-blog-archive-layout"/>
+                <key name ="prolific-primary-color"/>
+                <key name ="prolific-blog-archive-more-text"/>
+                <key name ="prolific-search-placholder"/>
+                <key name ="prolific-store-title"/>
+                <key name ="prolific-show-breadcrumb"/>
+            </key>
+        </key>
+    </admin-texts>
+</wpml-config>
