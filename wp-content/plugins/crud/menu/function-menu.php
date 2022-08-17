@@ -34,36 +34,45 @@ function manajemen_keuangan(){
         ];
         $insert = pemasukan($data);
         
-        $data = tampilsemuadata();
+        if ($insert != null) {
+            $_SESSION["tambahSukses"] = 'Perubahan Berhasil Disimpan';
+        }
+        $andWhere = "WHERE wp_kas_harian.saldo >1";
+        $data = tampilsemuadata($andWhere);
     }else if ($nama && $kredit != null) {
         $data = [
             'nama' => $nama,
             'kredit'=> $kredit,
         ];
         $insert = pengeluaran($data);
-        $data = tampilsemuadata();
+        if ($insert != null) {
+            $_SESSION["kurangSukses"] = 'Perubahan Berhasil Disimpan';
+        }
+        $andWhere = "WHERE wp_kas_harian.saldo >1";
+        $data = tampilsemuadata($andWhere);
         
     }else if($bulan && $tahun != null && $nama == null){
         $formatTanggal = '%/'.$bulan.'/'.$tahun;
-        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."'";
+        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND wp_kas_harian.saldo >1";
         $data = tampilSemuaData($andWhere);
     }else if($bulan != null && $nama == null && $tahun == null){
         $formatTanggal = '%/'.$bulan.'/%';
-        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."'";
+        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND wp_kas_harian.saldo >1";
         $data = tampilSemuaData($andWhere);
     }else if($tahun != null && $nama == null && $bulan == null){
         $formatTanggal = '%/'.$tahun;
-        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."'";
+        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND wp_kas_harian.saldo >1";
         $data = tampilSemuaData($andWhere);
     }
     if($nama == null && $bulan == null && $tahun == null ){
         $formatTanggal = '%/'.date('m/Y');
-        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."'";
+        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND wp_kas_harian.saldo >1";
         $data = tampilsemuadata($andWhere);
     }
     if($tggl && $print != null){
-        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $tggl."'";
+        $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $tggl."' AND wp_kas_harian.saldo >1";
         $data = tampilSemuaData($andWhere);
+        
         if($print == 'excel'){
             cetakExcelKeluarMasuk($data, 'harian');
         }else{

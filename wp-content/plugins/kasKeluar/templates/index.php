@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 </head>
 <body>
     <div class="container bg-light py-3">
@@ -108,6 +109,7 @@
             <th><center>Tanggal Dana Digunakan</center></th>
             <th><center>Penggunaan Dana</center></th>
             <th><center>Jumlah Uang Keluar</center></th>
+            <th><center>Pilihan</center></th>
         </tr>
         <?php
         $no = 1;
@@ -117,7 +119,77 @@
             <td><center><?= $data->tanggal ?></center></td>
             <td><?= $data->nama ?></td>
             <td><center><?= $data->kredit? "Rp". number_format($data->kredit,2,',','.'): '<center>-</center>' ?></center></td>
+            <td>
+                <center>
+                    <button class="btn btn-lg btn-primary"  data-bs-toggle="modal" data-bs-target="#ModalEdit<?= $data->id ?>" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-edit pt-1"></span></button>
+                    <button class="btn btn-lg btn-danger"  data-bs-toggle="modal" data-bs-target="#ModalHapus<?= $data->id ?>" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-trash pt-1"></span></button></a>
+                </center>
+            </td>
         </tr>
+        <div class="modal m-4 fade" id="ModalEdit<?= $data->id ?>">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-light">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Data Uang Keluar</h5>
+                            <button type="button" class="btn-close" style="width:10px;height:10px;margin-right:10px" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <?php
+                        $id = $data->id;
+                        $where = "WHERE wp_kas_pengeluaran.id=".$id;
+                        $ambilData = showAll('kas_pengeluaran', $where);
+                        foreach ($ambilData as $dataSaatIni) { ?>
+                        <div class="modal-body" style="font-size:18px">
+                            <form method="POST" action="">
+                                <div class="mb-3">
+                                    <input type="hidden" name="aksi" value="edit">
+                                    <input type="hidden" name="id" value="<?= $id ?>">
+                                    <label for="namaEdit" class="col-form-label"><b>Penggunaan Dana</b></label>
+                                    <input type="text" class="form-control" name="namaEdit" value="<?= $dataSaatIni->nama ?>">
+
+                                    <label for="uangEdit" class="col-form-label"><b>Jumlah Uang Keluar</b></label>
+                                    <input type="number" class="form-control" name="uangEdit" value="<?= $data->kredit?>">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-primary w-25"><b>Simpan</b></button>
+                                </div>
+                            </form>
+                        </div>
+                        <?php } ?>
+                </div>
+            </div>
+        </div>
+                
+        <div class="modal m-4 fade" id="ModalHapus<?= $data->id ?>">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-light">
+                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus Data</h5>
+                            <button type="button" class="btn-close" style="width:10px;height:10px;margin-right:10px" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <?php
+                        $id = $data->id;
+                        $where = "WHERE wp_kas_pengeluaran.id=".$id;
+                        $ambilData = showAll('kas_pengeluaran', $where);
+                        foreach ($ambilData as $dataSaatIni) { ?>
+                        <div class="modal-body" style="font-size:18px">
+                            <form method="POST" action="">
+                                <div class="mb-3">
+                                    <input type="hidden" name="aksi" value="hapus">
+                                    <input type="hidden" name="id" value="<?= $id ?>">
+                                    <label for="namaEdit" class="col-form-label"><b>Apakah anda yakin ingin menghapus data kas masuk dengan sumber dana dari <?= $data->nama ?> ?</b></label>
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-primary w-25"><b>Hapus</b></button>
+                                </div>
+                            </form>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
         <?php } ?>
         <?php if ($tampil_data == null) { ?>
             <tr>
@@ -125,7 +197,35 @@
             </tr>
         <?php } ?>
     </table>
-
-
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<?php if($_SESSION['editSukses']){ ?>
+            <script>
+                swal({
+                    title: "Selamat", 
+                    text: "Perubahan Data Berhasil Disimpan!", 
+                    type: "success"
+                },
+                    function(){ 
+                        location.reload();
+                    }
+                    );
+            </script>
+<?php unset($_SESSION['editSukses']); } ?>
+<?php if($_SESSION['hapusSukses']){ ?>
+        <script>
+            swal({
+                title: "Selamat", 
+                text: "Anda Berhasil Menghapus Data!", 
+                type: "success"
+                },
+            function(){ 
+                location.reload();
+            }
+            );
+        </script>
+<?php unset($_SESSION['hapusSukses']); } ?>
+
 </html>

@@ -20,6 +20,11 @@ function kas_keluar()
     $tahun = isset($_POST['tahun'])? $_POST['tahun'] : '';
     $print = isset($_POST['ctk']) ? $_POST['ctk'] :'';
 
+    $id       = isset($_POST['id']) ? $_POST['id'] :'';
+    $aksi     = isset($_POST['aksi']) ? $_POST['aksi'] :'';
+    $namaEdit = isset($_POST['namaEdit']) ? $_POST['namaEdit'] :'';
+    $uangEdit = isset($_POST['uangEdit']) ? $_POST['uangEdit'] :'';
+ 
     if($bulan && $tahun != null ){
         $formatTanggal = '%/'.$bulan.'/'.$tahun;
         $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."'";
@@ -48,6 +53,28 @@ function kas_keluar()
         }else{
             // echo "OTW cetak PDF";
             cetakPdfKeluarMasuk($data, 'keluar');
+        }
+    }
+    
+    if ($id && $aksi !=null) {
+        if ($aksi == 'edit') {
+            $dataUpdate = [
+                    'nama' => $namaEdit,
+                    'uang' => $uangEdit,
+                    'jenis'=> 'keluar'
+            ];
+            $cek = editData('kas_pengeluaran', $id, $dataUpdate);
+            if ($cek == 'ok') {
+                $_SESSION["editSukses"] = 'Perubahan Berhasil Disimpan';
+            }
+        }else if ($aksi == 'hapus') {
+            $dataDelete = [
+                    'jenis' => 'keluar',
+            ];
+            $cek = hapusData('kas_pengeluaran', $id, $dataDelete);
+            if ($cek == 'ok') {
+                $_SESSION["hapusSukses"] = 'Perubahan Berhasil Disimpan';
+            }
         }
     }
     include KAS_KELUAR_DIR.'index.php';
