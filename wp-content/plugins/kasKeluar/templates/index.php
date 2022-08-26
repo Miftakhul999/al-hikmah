@@ -135,7 +135,7 @@
                         </div>
                         <?php
                         $id = $data->id;
-                        $where = "WHERE wp_kas_pengeluaran.id=".$id;
+                        $where = "WHERE wphb_kas_pengeluaran.id=".$id;
                         $ambilData = showAll('kas_pengeluaran', $where);
                         foreach ($ambilData as $dataSaatIni) { ?>
                         <div class="modal-body" style="font-size:18px">
@@ -169,7 +169,7 @@
                         </div>
                         <?php
                         $id = $data->id;
-                        $where = "WHERE wp_kas_pengeluaran.id=".$id;
+                        $where = "WHERE wphb_kas_pengeluaran.id=".$id;
                         $ambilData = showAll('kas_pengeluaran', $where);
                         foreach ($ambilData as $dataSaatIni) { ?>
                         <div class="modal-body" style="font-size:18px">
@@ -177,7 +177,7 @@
                                 <div class="mb-3">
                                     <input type="hidden" name="aksi" value="hapus">
                                     <input type="hidden" name="id" value="<?= $id ?>">
-                                    <label for="namaEdit" class="col-form-label"><b>Apakah anda yakin ingin menghapus data kas masuk dengan sumber dana dari <?= $data->nama ?> ?</b></label>
+                                    <label for="namaEdit" class="col-form-label"><b>Apakah anda yakin ingin menghapus data kas keluar tersebut ?</b></label>
                                     
                                 </div>
                                 <div class="modal-footer">
@@ -193,7 +193,7 @@
         <?php } ?>
         <?php if ($tampil_data == null) { ?>
             <tr>
-                <td colspan="4"><center>Data Tidak Ditemukan</center></td>
+                <td colspan="5"><center>Data Tidak Ditemukan</center></td>
             </tr>
         <?php } ?>
     </table>

@@ -43,24 +43,24 @@ function kas_masuk()
 
    if($bulan && $tahun != null ){
          $formatTanggal = '%/'.$bulan.'/'.$tahun;
-         $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
+         $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
          $data = showAll('kas_penerimaan',$andWhere);
    }else if($bulan != null && $tahun == 0){
          $formatTanggal = '%/'.$bulan.'/%';
-         $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
+         $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
          $data = showAll('kas_penerimaan',$andWhere);
    }else if($tahun != null && $bulan == null){
          $formatTanggal = '%/'.$tahun;
-         $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
+         $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
          $data =  showAll('kas_penerimaan', $andWhere);
    }
    if($bulan == null && $tahun == null ){
          $formatTanggal = '%/'.date('m/Y');
-         $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
+         $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $formatTanggal."' AND is_delete = 0";
          $data =  showAll('kas_penerimaan', $andWhere);
    }
    if($print != null){
-         $andWhere = "WHERE wp_kas_harian.tanggal LIKE '". $tggl."' AND is_delete = 0";
+         $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $tggl."' AND is_delete = 0";
          $data = showAll('kas_penerimaan',$andWhere);
          if($print == 'excel'){
            // cetakExcel($data);

@@ -9,8 +9,8 @@ function tampilSemuaData($andWhere=''){
     global $wpdb;
 
     // $sql = "SELECT * FROM ". $table_name ." WHERE 1".$andwhere;
-    $sql = "SELECT wp_kas_harian.id, wp_kas_harian.tanggal, CONCAT(IFNULL(wp_kas_pengeluaran.nama, ' '), IFNULL(wp_kas_penerimaan.nama, ' ')) AS nama, wp_kas_penerimaan.debet, wp_kas_pengeluaran.kredit, wp_kas_harian.saldo FROM wp_kas_harian LEFT JOIN wp_kas_penerimaan ON wp_kas_penerimaan.kas_harian_id = wp_kas_harian.id LEFT
-    JOIN wp_kas_pengeluaran ON wp_kas_pengeluaran.kas_harian_id = wp_kas_harian.id ".$andWhere." AND CONCAT(IFNULL(wp_kas_penerimaan.is_delete, ' '), IFNULL(wp_kas_pengeluaran.is_delete,' ')) = 0 ORDER BY wp_kas_harian.id ASC ";
+    $sql = "SELECT wphb_kas_harian.id, wphb_kas_harian.tanggal, CONCAT(IFNULL(wphb_kas_pengeluaran.nama, ' '), IFNULL(wphb_kas_penerimaan.nama, ' ')) AS nama, wphb_kas_penerimaan.debet, wphb_kas_pengeluaran.kredit, wphb_kas_harian.saldo FROM wphb_kas_harian LEFT JOIN wphb_kas_penerimaan ON wphb_kas_penerimaan.kas_harian_id = wphb_kas_harian.id LEFT
+    JOIN wphb_kas_pengeluaran ON wphb_kas_pengeluaran.kas_harian_id = wphb_kas_harian.id ".$andWhere." AND CONCAT(IFNULL(wphb_kas_penerimaan.is_delete, ' '), IFNULL(wphb_kas_pengeluaran.is_delete,' ')) = 0 ORDER BY wphb_kas_harian.id ASC ";
     $query = $wpdb->get_results($sql);
     
     return $query;
@@ -23,7 +23,7 @@ function pemasukan($data = [])
     $table_nameDua = $wpdb->prefix.'kas_penerimaan';
     // var_dump($table_nameDua);
     // die;
-    $sql = "SELECT id, saldo FROM ".$table_name." WHERE wp_kas_harian.saldo >1 ORDER BY id DESC limit 1";
+    $sql = "SELECT id, saldo FROM ".$table_name." WHERE wphb_kas_harian.saldo >1 ORDER BY id DESC limit 1";
     $query = $wpdb->get_results($sql);
     foreach ($query as $saldo) {
         $saldo_id = $saldo->id;
@@ -40,7 +40,7 @@ function pemasukan($data = [])
             'saldo'   => $saldo_terbaru
         ]);
         if ($insertHarian != false) {
-            $sql = "SELECT id, saldo FROM ".$table_name." WHERE wp_kas_harian.saldo >1 ORDER BY id DESC limit 1";
+            $sql = "SELECT id, saldo FROM ".$table_name." WHERE wphb_kas_harian.saldo >1 ORDER BY id DESC limit 1";
             $query = $wpdb->get_results($sql);
             foreach ($query as $saldo) {
                 $saldo_id = $saldo->id;

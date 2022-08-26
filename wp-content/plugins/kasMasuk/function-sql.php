@@ -9,7 +9,7 @@ function showAll($tableName, $andWhere = '')
     global $wpdb;
 
     $nama_tabel = $wpdb->prefix.$tableName;
-    $sql = "SELECT ".$nama_tabel.".*,wp_kas_harian.tanggal AS tanggal FROM ".$nama_tabel." LEFT JOIN wp_kas_harian ON ".$nama_tabel.".kas_harian_id=wp_kas_harian.id ".$andWhere." AND ".$nama_tabel.".is_delete = 0 ORDER BY ".$nama_tabel.".id ASC";
+    $sql = "SELECT ".$nama_tabel.".*,wphb_kas_harian.tanggal AS tanggal FROM ".$nama_tabel." LEFT JOIN wphb_kas_harian ON ".$nama_tabel.".kas_harian_id=wphb_kas_harian.id ".$andWhere." AND ".$nama_tabel.".is_delete = 0 ORDER BY ".$nama_tabel.".id ASC";
     $query = $wpdb->get_results($sql);
     return $query;
 }
@@ -219,22 +219,22 @@ function editData($tabel, $id, $dataUpdate = [])
             $id_harian  = $dt->kas_harian_id;
             $debet      = $dt->debet;
         }
-        $resetUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = saldo - ". $debet ." WHERE wp_kas_harian.id >= ".$id_harian);
+        $resetUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = saldo - ". $debet ." WHERE wphb_kas_harian.id >= ".$id_harian);
         $updateNilai = $wpdb->query("UPDATE ".$nama_tabel." SET nama = '".$namaBaru."', debet = ". $uangBaru ." WHERE id = ".$id);
-        $updateUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = saldo + ". $uangBaru ." WHERE wp_kas_harian.id >= ".$id_harian);
-        $sql = "SELECT wp_kas_harian.id, wp_kas_harian.tanggal, CONCAT(IFNULL(wp_kas_pengeluaran.nama, ' '), IFNULL(wp_kas_penerimaan.nama, ' ')) AS nama, wp_kas_penerimaan.debet, wp_kas_pengeluaran.kredit, wp_kas_harian.saldo FROM wp_kas_harian LEFT JOIN wp_kas_penerimaan ON wp_kas_penerimaan.kas_harian_id = wp_kas_harian.id LEFT
-                JOIN wp_kas_pengeluaran ON wp_kas_pengeluaran.kas_harian_id = wp_kas_harian.id WHERE wp_kas_harian.id >=". $id_harian." ORDER BY wp_kas_harian.id ASC ";
+        $updateUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = saldo + ". $uangBaru ." WHERE wphb_kas_harian.id >= ".$id_harian);
+        $sql = "SELECT wphb_kas_harian.id, wphb_kas_harian.tanggal, CONCAT(IFNULL(wphb_kas_pengeluaran.nama, ' '), IFNULL(wphb_kas_penerimaan.nama, ' ')) AS nama, wphb_kas_penerimaan.debet, wphb_kas_pengeluaran.kredit, wphb_kas_harian.saldo FROM wphb_kas_harian LEFT JOIN wphb_kas_penerimaan ON wphb_kas_penerimaan.kas_harian_id = wphb_kas_harian.id LEFT
+                JOIN wphb_kas_pengeluaran ON wphb_kas_pengeluaran.kas_harian_id = wphb_kas_harian.id WHERE wphb_kas_harian.id >=". $id_harian." ORDER BY wphb_kas_harian.id ASC ";
         $cariData = $wpdb->get_results($sql);
         foreach ($cariData as $dataCari) {
             $id_utama = $dataCari->id;
             $id_saldo = $id_utama-1;
-            $saldoSebelumnya = $wpdb->get_results("SELECT saldo FROM wp_kas_harian WHERE id = ".$id_saldo);
+            $saldoSebelumnya = $wpdb->get_results("SELECT saldo FROM wphb_kas_harian WHERE id = ".$id_saldo);
             if ($dataCari->kredit == null) {
                 $dataUang = $saldoSebelumnya[0]->saldo + $dataCari->debet;
-                $updateUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = ". $dataUang ." WHERE wp_kas_harian.id >= ".$id_utama);
+                $updateUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = ". $dataUang ." WHERE wphb_kas_harian.id >= ".$id_utama);
             }else if($dataCari->debet == null){
                 $dataUang = $saldoSebelumnya[0]->saldo - $dataCari->kredit;
-                $updateUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = ". $dataUang ." WHERE wp_kas_harian.id >= ".$id_utama);
+                $updateUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = ". $dataUang ." WHERE wphb_kas_harian.id >= ".$id_utama);
             }
         }
     }else if($jenis == 'keluar'){
@@ -244,22 +244,22 @@ function editData($tabel, $id, $dataUpdate = [])
             $id_harian  = $dt->kas_harian_id;
             $kredit      = $dt->kredit;
         }
-        $resetUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = saldo + ". $kredit ." WHERE wp_kas_harian.id >= ".$id_harian);
+        $resetUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = saldo + ". $kredit ." WHERE wphb_kas_harian.id >= ".$id_harian);
         $updateNilai = $wpdb->query("UPDATE ".$nama_tabel." SET nama = '".$namaBaru."', kredit = ". $uangBaru ." WHERE id = ".$id);
-        $updateUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = saldo - ". $uangBaru ." WHERE wp_kas_harian.id >= ".$id_harian);
-        $sql = "SELECT wp_kas_harian.id, wp_kas_harian.tanggal, CONCAT(IFNULL(wp_kas_pengeluaran.nama, ' '), IFNULL(wp_kas_penerimaan.nama, ' ')) AS nama, wp_kas_penerimaan.debet, wp_kas_pengeluaran.kredit, wp_kas_harian.saldo FROM wp_kas_harian LEFT JOIN wp_kas_penerimaan ON wp_kas_penerimaan.kas_harian_id = wp_kas_harian.id LEFT
-                JOIN wp_kas_pengeluaran ON wp_kas_pengeluaran.kas_harian_id = wp_kas_harian.id WHERE wp_kas_harian.id >=". $id_harian." ORDER BY wp_kas_harian.id ASC ";
+        $updateUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = saldo - ". $uangBaru ." WHERE wphb_kas_harian.id >= ".$id_harian);
+        $sql = "SELECT wphb_kas_harian.id, wphb_kas_harian.tanggal, CONCAT(IFNULL(wphb_kas_pengeluaran.nama, ' '), IFNULL(wphb_kas_penerimaan.nama, ' ')) AS nama, wphb_kas_penerimaan.debet, wphb_kas_pengeluaran.kredit, wphb_kas_harian.saldo FROM wphb_kas_harian LEFT JOIN wphb_kas_penerimaan ON wphb_kas_penerimaan.kas_harian_id = wphb_kas_harian.id LEFT
+                JOIN wphb_kas_pengeluaran ON wphb_kas_pengeluaran.kas_harian_id = wphb_kas_harian.id WHERE wphb_kas_harian.id >=". $id_harian." ORDER BY wphb_kas_harian.id ASC ";
         $cariData = $wpdb->get_results($sql);
         foreach ($cariData as $dataCari) {
             $id_utama = $dataCari->id;
             $id_saldo = $id_utama-1;
-            $saldoSebelumnya = $wpdb->get_results("SELECT saldo FROM wp_kas_harian WHERE id = ".$id_saldo);
+            $saldoSebelumnya = $wpdb->get_results("SELECT saldo FROM wphb_kas_harian WHERE id = ".$id_saldo);
             if ($dataCari->kredit == null) {
                 $dataUang = $saldoSebelumnya[0]->saldo + $dataCari->debet;
-                $updateUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = ". $dataUang ." WHERE wp_kas_harian.id >= ".$id_utama);
+                $updateUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = ". $dataUang ." WHERE wphb_kas_harian.id >= ".$id_utama);
             }else if($dataCari->debet == null){
                 $dataUang = $saldoSebelumnya[0]->saldo - $dataCari->kredit;
-                $updateUang  = $wpdb->query("UPDATE wp_kas_harian SET saldo = ". $dataUang ." WHERE wp_kas_harian.id >= ".$id_utama);
+                $updateUang  = $wpdb->query("UPDATE wphb_kas_harian SET saldo = ". $dataUang ." WHERE wphb_kas_harian.id >= ".$id_utama);
             }
         }
     }
@@ -274,7 +274,7 @@ function hapusData($tabel, $id, $dataDelete = [] )
     $nama_tabel = $wpdb->prefix.$tabel;
     $cariDataTabel = showAll($tabel, 'WHERE '.$nama_tabel.'.id = '.$id);
     $dt = $cariDataTabel[0]->kas_harian_id - 1;
-    $updateKas = $wpdb->query("UPDATE wp_kas_harian SET saldo = 0 WHERE id = ".$cariDataTabel[0]->kas_harian_id);
+    $updateKas = $wpdb->query("UPDATE wphb_kas_harian SET saldo = 0 WHERE id = ".$cariDataTabel[0]->kas_harian_id);
     
     //DATA YANG DIHAPUS MASIH DIHITUNG MESKI PUN SUDAH TAK UBAH NILAINYA DULU MENJADI NOLL
     if ($tabel =="kas_pengeluaran") {
@@ -283,19 +283,19 @@ function hapusData($tabel, $id, $dataDelete = [] )
         $updateMasukdanKeluar = $wpdb->query("UPDATE ".$nama_tabel." SET is_delete = 1,debet = 0 WHERE id = ".$id);
     }
 
-    $cariSaldo = $wpdb->get_results("SELECT saldo from wp_kas_harian WHERE id = ".$dt);
+    $cariSaldo = $wpdb->get_results("SELECT saldo from wphb_kas_harian WHERE id = ".$dt);
     $saldo = $cariSaldo[0]->saldo;
-    $sql = "SELECT wp_kas_harian.id, wp_kas_penerimaan.debet, wp_kas_pengeluaran.kredit, wp_kas_harian.saldo FROM wp_kas_harian LEFT JOIN wp_kas_penerimaan ON wp_kas_penerimaan.kas_harian_id = wp_kas_harian.id LEFT
-            JOIN wp_kas_pengeluaran ON wp_kas_pengeluaran.kas_harian_id = wp_kas_harian.id WHERE wp_kas_harian.id > ".$cariDataTabel[0]->kas_harian_id." AND wp_kas_harian.saldo > 1 ORDER BY wp_kas_harian.id ASC ";
+    $sql = "SELECT wphb_kas_harian.id, wphb_kas_penerimaan.debet, wphb_kas_pengeluaran.kredit, wphb_kas_harian.saldo FROM wphb_kas_harian LEFT JOIN wphb_kas_penerimaan ON wphb_kas_penerimaan.kas_harian_id = wphb_kas_harian.id LEFT
+            JOIN wphb_kas_pengeluaran ON wphb_kas_pengeluaran.kas_harian_id = wphb_kas_harian.id WHERE wphb_kas_harian.id > ".$cariDataTabel[0]->kas_harian_id." AND wphb_kas_harian.saldo > 1 ORDER BY wphb_kas_harian.id ASC ";
     $cariData = $wpdb->get_results($sql);
     foreach ($cariData as $data) {
         $id = $data->id;
         if($data->debet != null){
             $saldo = $saldo + $data->debet;
-            $updateKas = $wpdb->query("UPDATE wp_kas_harian SET saldo = ".$saldo." WHERE id = ".$id);
+            $updateKas = $wpdb->query("UPDATE wphb_kas_harian SET saldo = ".$saldo." WHERE id = ".$id);
         }else if($data->kredit != null){
             $saldo = $saldo - $data->kredit;
-            $updateKas = $wpdb->query("UPDATE wp_kas_harian SET saldo = ".$saldo." WHERE id = ".$id);
+            $updateKas = $wpdb->query("UPDATE wphb_kas_harian SET saldo = ".$saldo." WHERE id = ".$id);
         }
     }
     return 'ok';

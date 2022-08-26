@@ -25,7 +25,7 @@
             <div class="col-md-9">
                 <button class="btn btn-lg btn-warning mx-2"  data-bs-toggle="modal" data-bs-target="#exampleModalTiga" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-search mt-1 mb-1"></span></button>
                 <?php if($uangMasuk != 0){ ?>
-                    <button class="btn btn-success btn-lg btn-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalEmpat" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-printer mt-1 mb-1"></span></button>
+                    <button class="btn btn-danger btn-lg btn-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalEmpat" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-printer mt-1 mb-1"></span></button>
                     <?php } ?>
             </div>
             <div class="modal mt-4 fade" id="exampleModalTiga" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -138,7 +138,7 @@
                         </div>
                         <?php
                         $id = $data->id;
-                        $where = "WHERE wp_kas_penerimaan.id=".$id;
+                        $where = "WHERE wphb_kas_penerimaan.id=".$id;
                         $ambilData = showAll('kas_penerimaan', $where);
                         foreach ($ambilData as $dataSaatIni) { ?>
                         <div class="modal-body" style="font-size:18px">
@@ -172,7 +172,7 @@
                         </div>
                         <?php
                         $id = $data->id;
-                        $where = "WHERE wp_kas_penerimaan.id=".$id;
+                        $where = "WHERE wphb_kas_penerimaan.id=".$id;
                         $ambilData = showAll('kas_penerimaan', $where);
                         foreach ($ambilData as $dataSaatIni) { ?>
                         <div class="modal-body" style="font-size:18px">
@@ -197,7 +197,7 @@
         
         <?php if ($tampil_data == null) { ?>
             <tr>
-                <td colspan="4"><center>Data Tidak Ditemukan</center></td>
+                <td colspan="5"><center>Data Tidak Ditemukan</center></td>
             </tr>
         <?php } ?>
 
