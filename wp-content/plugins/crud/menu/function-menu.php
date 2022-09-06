@@ -9,7 +9,7 @@ add_action('admin_menu', 'menuCrud');
 function menuCrud()
 {
     add_menu_page(
-        __('KAS HARIAN'),   //Judul Halaman
+        __('APLIKASI BUKU KAS| KAS HARIAN'),   //Judul Halaman
         'Kas Harian',       // Judul Menu
         'manage_options',           //Capability
         'manajemen-keuangan',        //slug
@@ -23,33 +23,39 @@ function manajemen_keuangan(){
     $debet = isset($_POST['debet'])? $_POST['debet'] : '';
     $kredit = isset($_POST['kredit'])? $_POST['kredit'] : '';
     $tggl = isset($_POST['tggl'])? $_POST['tggl'] : '';
+    $tanggal = isset($_POST['tanggal'])? $_POST['tanggal'] : '';
     $bulan = isset($_POST['bulan'])? $_POST['bulan'] : '';
     $tahun = isset($_POST['tahun'])? $_POST['tahun'] : '';
     $print = isset($_POST['ctk']) ? $_POST['ctk'] :'';
-    
     if ($nama && $debet != null) {
         $data = [
             'nama' => $nama,
             'debet'=> $debet,
+            'tanggal' => $tanggal
         ];
         $insert = pemasukan($data);
         
         if ($insert != null) {
             $_SESSION["tambahSukses"] = 'Perubahan Berhasil Disimpan';
         }
-        $andWhere = "WHERE wphb_kas_harian.saldo >1";
+        
+        $formatTanggal = '%/'.date('m').'/'.date('Y');
+        $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $formatTanggal."' AND wphb_kas_harian.saldo >1";
         $data = tampilsemuadata($andWhere);
     }else if ($nama && $kredit != null) {
         $data = [
             'nama' => $nama,
             'kredit'=> $kredit,
+            'tanggal' => $tanggal
         ];
         $insert = pengeluaran($data);
         if ($insert != null) {
             $_SESSION["kurangSukses"] = 'Perubahan Berhasil Disimpan';
         }
-        $andWhere = "WHERE wphb_kas_harian.saldo >1";
+        $formatTanggal = '%/'.date('m').'/'.date('Y');
+        $andWhere = "WHERE wphb_kas_harian.tanggal LIKE '". $formatTanggal."' AND wphb_kas_harian.saldo >1";
         $data = tampilsemuadata($andWhere);
+        
         
     }else if($bulan && $tahun != null && $nama == null){
         $formatTanggal = '%/'.$bulan.'/'.$tahun;

@@ -4,15 +4,15 @@
  * Membuat Menu Laba di Admin
  */
 session_start();
- add_action('admin_menu', 'menuMasuk');
- function menuMasuk()
- {
-    add_menu_page(
-        __('KAS MASUK'),
-        'Kas Masuk',
-        'manage_options',
-        'kas-masuk',
-        'kas_masuk',
+      add_action('admin_menu', 'menuMasuk');
+      function menuMasuk()
+      {
+      add_menu_page(
+            __('APLIKASI BUKU KAS| KAS MASUK'),
+            'Kas Masuk',
+            'manage_options',
+            'kas-masuk',
+            'kas_masuk',
       //   'dashicons-admin-generic',
       //   'dashicons-format-asside',
       //   'dashicons-media-spreadsheet',

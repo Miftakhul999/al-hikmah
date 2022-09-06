@@ -3,7 +3,7 @@
 add_action('admin_menu', 'menuKeluar');
 function menuKeluar(){
     add_menu_page(
-        __('KAS KELUAR'),
+        __('APLIKASI BUKU KAS| KAS KELUAR'),
         'Kas Keluar',
         'manage_options',
         'kas-keluar',

@@ -11,6 +11,7 @@ function tampilSemuaData($andWhere=''){
     // $sql = "SELECT * FROM ". $table_name ." WHERE 1".$andwhere;
     $sql = "SELECT wphb_kas_harian.id, wphb_kas_harian.tanggal, CONCAT(IFNULL(wphb_kas_pengeluaran.nama, ' '), IFNULL(wphb_kas_penerimaan.nama, ' ')) AS nama, wphb_kas_penerimaan.debet, wphb_kas_pengeluaran.kredit, wphb_kas_harian.saldo FROM wphb_kas_harian LEFT JOIN wphb_kas_penerimaan ON wphb_kas_penerimaan.kas_harian_id = wphb_kas_harian.id LEFT
     JOIN wphb_kas_pengeluaran ON wphb_kas_pengeluaran.kas_harian_id = wphb_kas_harian.id ".$andWhere." AND CONCAT(IFNULL(wphb_kas_penerimaan.is_delete, ' '), IFNULL(wphb_kas_pengeluaran.is_delete,' ')) = 0 ORDER BY wphb_kas_harian.id ASC ";
+
     $query = $wpdb->get_results($sql);
     
     return $query;
@@ -21,8 +22,7 @@ function pemasukan($data = [])
     
     $table_name = $wpdb->prefix.'kas_harian';
     $table_nameDua = $wpdb->prefix.'kas_penerimaan';
-    // var_dump($table_nameDua);
-    // die;
+    
     $sql = "SELECT id, saldo FROM ".$table_name." WHERE wphb_kas_harian.saldo >1 ORDER BY id DESC limit 1";
     $query = $wpdb->get_results($sql);
     foreach ($query as $saldo) {
@@ -31,10 +31,11 @@ function pemasukan($data = [])
     }
         $kas_harian_id      = $saldo_id;
         $saldo_terbaru      = $saldo_jumlah + $data['debet'];
-        $tanggal            = date('d/m/Y');
+        $tanggalMentah      = $data['tanggal'];
+        $eksTanggal         = explode("-", $tanggalMentah);
+        $tanggal            = $eksTanggal[2]. "/". $eksTanggal[1]. "/". $eksTanggal[0];
         $nama               = $data['nama'];
         $debet              = $data['debet'];
-        
         $insertHarian = $wpdb->insert($table_name, [
             'tanggal' => $tanggal,
             'saldo'   => $saldo_terbaru
@@ -72,7 +73,9 @@ function pengeluaran($data = [])
     }
         $kas_harian_id      = $saldo_id;
         $saldo_terbaru      = $saldo_jumlah - $data['kredit'];
-        $tanggal            = date('d/m/Y');
+        $tanggalMentah      = $data['tanggal'];
+        $eksTanggal         = explode("-", $tanggalMentah);
+        $tanggal            = $eksTanggal[2]. "/". $eksTanggal[1]. "/". $eksTanggal[0];
         $nama               = $data['nama'];
         $kredit              = $data['kredit'];
         
@@ -91,6 +94,7 @@ function pengeluaran($data = [])
                 'kas_harian_id' => $saldo_id,
                 'nama'  => $nama,
                 'kredit' => $kredit
+                
             ]);
         }
     return 'ok';

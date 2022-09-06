@@ -40,7 +40,7 @@
                     <?php } ?>
             </div>
             <div class="col-md-3 ml-auto mr-1">
-                <?=  $bulan == null? "<h6>Sisa Saldo</h6>":"<h6>Sisa Saldo Berdasarkan Pencarian</h6>"?>
+                <?=  $bulan == null? "<h6>Sisa Saldo Bulan Ini</h6>":"<h6>Sisa Saldo Berdasarkan Pencarian</h6>"?>
                     <h4><b><?= $data[0]->saldo?"Rp ". number_format($data[$index]->saldo,2,',','.'):"-" ?></b></h4>
             </div>
         </div>
@@ -60,6 +60,10 @@
             <div class="mb-3">
                 <label for="message-text" class="col-form-label">Nominal Masuk</label>
                 <input type="number" class="form-control" name="debet" required="required" id="message-text">
+            </div>
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">Tanggal Masuk</label>
+                <input type="date" class="form-control" name="tanggal" required="required" id="message-text">
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
@@ -153,6 +157,10 @@
             <div class="mb-3">
                 <label for="message-text" class="col-form-label">Nominal Keluar</label>
                 <input type="number" class="form-control" name="kredit" required="required" id="message-text">
+            </div>
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">Tanggal Keluar</label>
+                <input type="date" class="form-control" name="tanggal" required="required" id="message-text">
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->

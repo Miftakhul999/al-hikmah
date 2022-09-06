@@ -97,7 +97,7 @@
             </div>
         </div>
             <div class="col-md-3 ml-auto mr-1">
-                <?=  $bulan == null? "<h6>Total Uang Masuk</h6>":"<h6>Total Uang Masuk Berdasarkan Pencarian</h6>"?>
+                <?=  $bulan == null? "<h6>Total Uang Masuk Bulan Ini</h6>":"<h6>Total Uang Masuk Berdasarkan Pencarian</h6>"?>
                 <h4><b><?= $uangMasuk != 0?"Rp ". number_format($uangMasuk,2,',','.'):"-" ?></b></h4>
             </div>
         </div>
