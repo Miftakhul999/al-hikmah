@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,11 +22,15 @@
                     $uangKeluar += $data->kredit;
                 }
             ?>
-            <div class="col-md-9">
-            <button class="btn btn-lg btn-warning mx-2"  data-bs-toggle="modal" data-bs-target="#exampleModalTiga" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-search mt-1 mb-1"></span></button>
-                <?php if($uangKeluar != 0){ ?>
-                    <button class="btn btn-danger btn-lg btn-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalEmpat" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-printer mt-1 mb-1"></span></button>
-                    <?php } ?>
+            <div class="col-md-9 ml-auto mr-1">
+                <?=  $bulan == null? "<h6>Total Uang Keluar Bulan Ini</h6>":"<h6>Total Uang Keluar Berdasarkan Pencarian</h6>"?>
+                <h4><b><?= $uangKeluar != 0?"Rp ". number_format($uangKeluar,2,',','.'):"-" ?></b></h4>
+            </div>
+            <div class="col-md-3">
+            <button class="btn btn-lg btn-warning mt-2"  data-bs-toggle="modal" data-bs-target="#exampleModalTiga" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-search mt-1 mb-1"></span></button>
+            <?php if($uangKeluar != 0){ ?>
+                <button class="btn btn-danger btn-lg btn-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalEmpat" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-printer mt-1 mb-1"></span></button>
+            <?php } ?>
             </div>
             <div class="modal mt-4 fade" id="exampleModalTiga" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -71,7 +74,7 @@
             </div>
             
             <div class="modal mt-4 fade" id="exampleModalEmpat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+                <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header bg-danger text-light">
                     <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan</h5>
@@ -97,106 +100,104 @@
             </div>
     </div>
 
-            <div class="col-md-3 ml-auto mr-1">
-                <?=  $bulan == null? "<h6>Total Uang Keluar Bulan Ini</h6>":"<h6>Total Uang Keluar Berdasarkan Pencarian</h6>"?>
-                <h4><b><?= $uangKeluar != 0?"Rp ". number_format($uangKeluar,2,',','.'):"-" ?></b></h4>
-            </div>
         </div>
         <!-- Table untuk menampilkan data dari hasil query diatas -->
+        
         <table class="table mt-3" style="font-size:15px">
-        <tr class="table-info">
-            <th><center>No.</center></th>
-            <th><center>Tanggal Dana Digunakan</center></th>
-            <th><center>Penggunaan Dana</center></th>
-            <th><center>Jumlah Uang Keluar</center></th>
-            <th><center>Pilihan</center></th>
-        </tr>
-        <?php
-        $no = 1;
-        foreach ($tampil_data as $data ) { ?>
-        <tr>
-            <td><center><?= $no++ ?></center></td>
-            <td><center><?= $data->tanggal ?></center></td>
-            <td><?= $data->nama ?></td>
-            <td><center><?= $data->kredit? "Rp". number_format($data->kredit,2,',','.'): '<center>-</center>' ?></center></td>
-            <td>
-                <center>
-                    <button class="btn btn-lg btn-primary"  data-bs-toggle="modal" data-bs-target="#ModalEdit<?= $data->id ?>" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-edit pt-1"></span></button>
-                    <button class="btn btn-lg btn-danger"  data-bs-toggle="modal" data-bs-target="#ModalHapus<?= $data->id ?>" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-trash pt-1"></span></button></a>
-                </center>
-            </td>
-        </tr>
-        <div class="modal m-4 fade" id="ModalEdit<?= $data->id ?>">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary text-light">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Data Uang Keluar</h5>
-                            <button type="button" class="btn-close" style="width:10px;height:10px;margin-right:10px" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <?php
-                        $id = $data->id;
-                        $where = "WHERE wphb_kas_pengeluaran.id=".$id;
-                        $ambilData = showAll('kas_pengeluaran', $where);
-                        foreach ($ambilData as $dataSaatIni) { ?>
-                        <div class="modal-body" style="font-size:18px">
-                            <form method="POST" action="">
-                                <div class="mb-3">
-                                    <input type="hidden" name="aksi" value="edit">
-                                    <input type="hidden" name="id" value="<?= $id ?>">
-                                    <label for="namaEdit" class="col-form-label"><b>Penggunaan Dana</b></label>
-                                    <input type="text" class="form-control" name="namaEdit" value="<?= $dataSaatIni->nama ?>">
+                <tr class="table-info">
+                    <th><center>No.</center></th>
+                    <th><center>Tanggal Dana Digunakan</center></th>
+                    <th><center>Penggunaan Dana</center></th>
+                    <th><center>Jumlah Uang Keluar</center></th>
+                    <th><center>Pilihan</center></th>
+                </tr>
+                <?php
+                $no = 1;
+                foreach ($tampil_data as $data ) { ?>
+                <tr>
+                    <td><center><?= $no++ ?></center></td>
+                    <td><center><?= $data->tanggal ?></center></td>
+                    <td><?= $data->nama ?></td>
+                    <td><center><?= $data->kredit? "Rp". number_format($data->kredit,2,',','.'): '<center>-</center>' ?></center></td>
+                    <td>
+                        <center>
+                            <button class="btn btn-lg btn-primary"  data-bs-toggle="modal" data-bs-target="#ModalEdit<?= $data->id ?>" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-edit pt-1"></span></button>
+                            <button class="btn btn-lg btn-danger"  data-bs-toggle="modal" data-bs-target="#ModalHapus<?= $data->id ?>" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-trash pt-1"></span></button></a>
+                        </center>
+                    </td>
+                </tr>
+            <div class="modal m-4 fade" id="ModalEdit<?= $data->id ?>">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-light">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Data Uang Keluar</h5>
+                                <button type="button" class="btn-close" style="width:10px;height:10px;margin-right:10px" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <?php
+                            $id = $data->id;
+                            $where = "WHERE wphb_kas_pengeluaran.id=".$id;
+                            $ambilData = showAll('kas_pengeluaran', $where);
+                            foreach ($ambilData as $dataSaatIni) { ?>
+                            <div class="modal-body" style="font-size:18px">
+                                <form method="POST" action="">
+                                    <div class="mb-3">
+                                        <input type="hidden" name="aksi" value="edit">
+                                        <input type="hidden" name="id" value="<?= $id ?>">
+                                        <label for="namaEdit" class="col-form-label"><b>Penggunaan Dana</b></label>
+                                        <input type="text" class="form-control" name="namaEdit" value="<?= $dataSaatIni->nama ?>">
 
-                                    <label for="uangEdit" class="col-form-label"><b>Jumlah Uang Keluar</b></label>
-                                    <input type="number" class="form-control" name="uangEdit" value="<?= $data->kredit?>">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary w-25"><b>Simpan</b></button>
-                                </div>
-                            </form>
-                        </div>
-                        <?php } ?>
-                </div>
-            </div>
-        </div>
-                
-        <div class="modal m-4 fade" id="ModalHapus<?= $data->id ?>">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-danger text-light">
-                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus Data</h5>
-                            <button type="button" class="btn-close" style="width:10px;height:10px;margin-right:10px" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <?php
-                        $id = $data->id;
-                        $where = "WHERE wphb_kas_pengeluaran.id=".$id;
-                        $ambilData = showAll('kas_pengeluaran', $where);
-                        foreach ($ambilData as $dataSaatIni) { ?>
-                        <div class="modal-body" style="font-size:18px">
-                            <form method="POST" action="">
-                                <div class="mb-3">
-                                    <input type="hidden" name="aksi" value="hapus">
-                                    <input type="hidden" name="id" value="<?= $id ?>">
-                                    <label for="namaEdit" class="col-form-label"><b>Apakah anda yakin ingin menghapus data kas keluar tersebut ?</b></label>
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary w-25"><b>Hapus</b></button>
-                                </div>
-                            </form>
-                        </div>
-                        <?php } ?>
+                                        <label for="uangEdit" class="col-form-label"><b>Jumlah Uang Keluar</b></label>
+                                        <input type="number" class="form-control" name="uangEdit" value="<?= $data->kredit?>">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary w-25"><b>Simpan</b></button>
+                                    </div>
+                                </form>
+                            </div>
+                            <?php } ?>
                     </div>
                 </div>
             </div>
-        <?php } ?>
-        <?php if ($tampil_data == null) { ?>
-            <tr>
-                <td colspan="5"><center>Data Tidak Ditemukan</center></td>
-            </tr>
-        <?php } ?>
-    </table>
+                    
+            <div class="modal m-4 fade" id="ModalHapus<?= $data->id ?>">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-light">
+                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus Data</h5>
+                                <button type="button" class="btn-close" style="width:10px;height:10px;margin-right:10px" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <?php
+                            $id = $data->id;
+                            $where = "WHERE wphb_kas_pengeluaran.id=".$id;
+                            $ambilData = showAll('kas_pengeluaran', $where);
+                            foreach ($ambilData as $dataSaatIni) { ?>
+                            <div class="modal-body" style="font-size:18px">
+                                <form method="POST" action="">
+                                    <div class="mb-3">
+                                        <input type="hidden" name="aksi" value="hapus">
+                                        <input type="hidden" name="id" value="<?= $id ?>">
+                                        <label for="namaEdit" class="col-form-label"><b>Apakah anda yakin ingin menghapus data kas keluar tersebut ?</b></label>
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary w-25"><b>Hapus</b></button>
+                                    </div>
+                                </form>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+            </div>
+            <?php } ?>
+            <?php if ($tampil_data == null) { ?>
+                <tr>
+                    <td colspan="5"><center>Data Tidak Ditemukan</center></td>
+                </tr>
+            <?php } ?>
+        </table>
+    </div>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>

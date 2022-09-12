@@ -22,11 +22,15 @@
                     $uangMasuk += $data->debet;
                 }
             ?>
-            <div class="col-md-9">
-                <button class="btn btn-lg btn-warning mx-2"  data-bs-toggle="modal" data-bs-target="#exampleModalTiga" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-search mt-1 mb-1"></span></button>
+            <div class="col-md-9 ml-auto mr-1">
+                <?=  $bulan == null? "<h6>Total Uang Masuk Bulan Ini</h6>":"<h6>Total Uang Masuk Berdasarkan Pencarian</h6>"?>
+                <h4><b><?= $uangMasuk != 0?"Rp ". number_format($uangMasuk,2,',','.'):"-" ?></b></h4>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-lg btn-warning mt-2"  data-bs-toggle="modal" data-bs-target="#exampleModalTiga" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-search mt-1 mb-1"></span></button>
                 <?php if($uangMasuk != 0){ ?>
-                    <button class="btn btn-danger btn-lg btn-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalEmpat" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-printer mt-1 mb-1"></span></button>
-                    <?php } ?>
+                    <button class="btn btn-danger btn-lg btn-secondary mt-2"  data-bs-toggle="modal" data-bs-target="#exampleModalEmpat" data-bs-whatever="@getbootstrap"><span class="dashicons dashicons-printer mt-1 mb-1"></span></button>
+                <?php } ?>
             </div>
             <div class="modal mt-4 fade" id="exampleModalTiga" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -71,7 +75,7 @@
 
             
             <div class="modal mt-4 fade" id="exampleModalEmpat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+                <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header bg-danger text-light">
                     <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan</h5>
@@ -96,12 +100,10 @@
                 </div>
             </div>
         </div>
-            <div class="col-md-3 ml-auto mr-1">
-                <?=  $bulan == null? "<h6>Total Uang Masuk Bulan Ini</h6>":"<h6>Total Uang Masuk Berdasarkan Pencarian</h6>"?>
-                <h4><b><?= $uangMasuk != 0?"Rp ". number_format($uangMasuk,2,',','.'):"-" ?></b></h4>
-            </div>
         </div>
         <!-- Table untuk menampilkan data dari hasil query diatas -->
+        
+    <div class="table-responsive">
         <table class="table mt-3" style="font-size:15px">
         <tr class="table-info">
             <th><center>No.</center></th>
@@ -202,6 +204,7 @@
         <?php } ?>
 
     </table>
+</div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
